@@ -1,4 +1,4 @@
-[](Command: python -m markdown -x toc -x fenced_code -x def_list -x codehilite -x meta -c md_cfg.json README.md > README.html)
+<!---Command: python -m markdown -x toc -x fenced_code -x def_list -x codehilite -x meta -c md_cfg.json README.md > README.html)--->
 
 # Overview
 
