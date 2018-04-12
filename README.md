@@ -29,7 +29,9 @@ Install Ansible using the conda-forge conda channel
 As an example the playbook will create an AWS EC2 instance, run a
 few tasks on it and then destroy the instance to clean up.
 
-For this an AWS IAM keypair will be required.
+For this an AWS IAM keypair will be required. Create a YAML file and
+paste in the following code:
+
 
 ```yaml
 ---
