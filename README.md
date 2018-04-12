@@ -54,9 +54,9 @@ For this an AWS IAM keypair will be required.
             Name: Demo
       register: ec2
 
-   - name: Add all instance public IPs to host group
-     add_host: hostname={{ item.public_ip }} groups=ec2hosts
-     loop: "{{ ec2.instances }}"
+    - name: Add all instance public IPs to host group
+      add_host: hostname={{ item.public_ip }} groups=ec2hosts
+      loop: "{{ ec2.instances }}"
 ```
 
 # YAML Syntax
