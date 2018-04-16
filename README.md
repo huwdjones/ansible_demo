@@ -99,6 +99,9 @@ The `ansible_demo.yml` file contains the following play:
         state: started
       with_items: "{{ ec2.instances }}"
 
+    - name: ping hosts
+      ping:
+
 - name: Terminate EC2 instance
   hosts: localhost
   connection: local
@@ -223,19 +226,32 @@ martin:
 # This is a comment
 ````
 
-* Variable - Ansible uses `“{{ var }}”` for variables:
+* Variables - Ansible uses `“{{ var }}”` for variables:
 ```yaml
 foo: "{{ variable }}"
 ```
 
+* Loops and conditionals e.g. `with_items` and `register`.
+
+* Dependencies
+
 # The Ansible Project Structure
+
+[http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html?highlight=layout#alternative-directory-layout](http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html?highlight=layout#alternative-directory-layout)
+
+How to refactor and decouple Ansible.
 
 # Ansible Galaxy
 
+[https://galaxy.ansible.com/](https://galaxy.ansible.com/)
+
+Open source roles e.g.
+
+* nginx
+* logrotate
+
 # Ansible Reference
 
-# Examples
+All standard modules documentation at:
 
-* Copying a file
-* Creating an EC2 instance
-
+[http://docs.ansible.com/ansible/latest/modules/list_of_all_modules.html?highlight=modules](http://docs.ansible.com/ansible/latest/modules/list_of_all_modules.html?highlight=modules)
