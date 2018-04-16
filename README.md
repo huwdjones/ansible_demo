@@ -156,8 +156,8 @@ ansible-playbook /path/to/ansible_demo.yml --vault-password-file /path/to/vault_
 # The Ansible Vault
 
 The vault works by decrypting anything encrypted within the run time
-scope if a decryption method is provided such as a password file or
-password itself.
+scope if a decryption method is provided in the ansible-playbook command
+ such as a password file or password itself.
 
 In the above example individual string variables have been encrypted however
 Ansible can handle entire files containing encrypted data also.

@@ -54,6 +54,9 @@
         state: started
       with_items: "{{ ec2.instances }}"
 
+    - name: ping hosts
+      ping:
+
 - name: Terminate EC2 instance
   hosts: localhost
   connection: local
