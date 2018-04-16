@@ -139,7 +139,9 @@ ansible-vault encrypt_string --vault_password_file=vault_pass.txt '<AWS ACCESS K
 
 and likewise:
 
-`ansible-vault encrypt_string --vault-password-file=vault_pass.txt '<AWS SECRET KEY HERE>' --name 'aws_secret_key'`
+```
+ansible-vault encrypt_string --vault-password-file=vault_pass.txt '<AWS SECRET KEY HERE>' --name 'aws_secret_key'
+```
 
 where `vault_pass.txt` is the local file holding the strong password.
 Copy and paste the output into the playbook for the relevant lines.
@@ -147,13 +149,88 @@ Copy and paste the output into the playbook for the relevant lines.
 To execute the play then run the following command from the command line
 assuming you still have the conda virtualenv loaded:
 
-`ansible-playbook /path/to/ansible_demo.yml --vault-password-file /path/to/vault_pass.txt`
+```
+ansible-playbook /path/to/ansible_demo.yml --vault-password-file /path/to/vault_pass.txt
+```
 
-# YAML Syntax
+# The Ansible Vault
+
+The vault works by decrypting anything encrypted within the run time
+scope if a decryption method is provided such as a password file or
+password itself.
+
+In the above example individual string variables have been encrypted however
+Ansible can handle entire files containing encrypted data also.
+
+Projects I have worked on have also used a password manager beloning to
+an OS as the means of authentication for unlocking the vault using a
+shell script and setting this as the method of authentication via the
+`ANSIBLE_VAULT_PASSWORD_FILE` variable set in the `ansible.cfg` file.
+This file sits in the root of all playbook folders by default and is a
+means of controlling the local Ansible run time environment.
+
+# YAML & Ansible Syntax
+
+* For full documentation see [http://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html](http://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
+* Ansible plays always begin with `---` at the start of the file.
+* All tasks should start with a `-name`. This aids with understanding on
+examining run time output e.g.
+
+```
+PLAY [Instantiate EC2 instance] ***************************************************************************************************************************************************************
+
+TASK [Provision a set of instances] ***********************************************************************************************************************************************************
+changed: [localhost]
+
+TASK [Add new instance to host group] *********************************************************************************************************************************************************
+changed: [localhost] => (item={u'kernel': None, u'root_device_type': u'ebs', u'private_dns_name': u'ip-10-0-0-230.eu-west-1.compute.internal', u'public_ip': u'', u'private_ip': u'10.0.0.230', u'id': u'', u'ebs_optimized': False, u'state': u'running', u'virtualization_type': u'hvm', u'architecture': u'x86_64', u'ramdisk': None, u'block_device_mapping': {u'/dev/sda1': {u'status': u'attached', u'delete_on_termination': True, u'volume_id': u''}}, u'key_name': u'ansible_demo', u'image_id': u'ami-f90a4880', u'tenancy': u'default', u'groups': {u'': u'default'}, u'public_dns_name': u'', u'state_code': 16, u'tags': {}, u'placement': u'eu-west-1a', u'ami_launch_index': u'0', u'dns_name': u'', u'region': u'eu-west-1', u'launch_time': u'', u'instance_type': u't2.micro', u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen'})
+
+TASK [Wait for SSH to come up] ****************************************************************************************************************************************************************
+ok: [localhost] => (item={u'kernel': None, u'root_device_type': u'ebs', u'private_dns_name': u'ip-10-0-0-230.eu-west-1.compute.internal', u'public_ip': u'', u'private_ip': u'10.0.0.230', u'id': u'', u'ebs_optimized': False, u'state': u'running', u'virtualization_type': u'hvm', u'architecture': u'x86_64', u'ramdisk': None, u'block_device_mapping': {u'/dev/sda1': {u'status': u'attached', u'delete_on_termination': True, u'volume_id': u''}}, u'key_name': u'ansible_demo', u'image_id': u'ami-f90a4880', u'tenancy': u'default', u'groups': {u'': u'default'}, u'public_dns_name': u'', u'state_code': 16, u'tags': {}, u'placement': u'eu-west-1a', u'ami_launch_index': u'0', u'dns_name': u'', u'region': u'eu-west-1', u'launch_time': u'', u'instance_type': u't2.micro', u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen'})
+
+PLAY [Terminate EC2 instance] *****************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Terminate instances that were previously launched] **************************************************************************************************************************************
+changed: [localhost]
+
+PLAY RECAP ************************************************************************************************************************************************************************************
+localhost                  : ok=5    changed=3    unreachable=0    failed=0
+```
+
+* Lists:
+
+```yaml
+fruits:
+    - Apple
+    - Orange
+    - Strawberry
+    - Mango
+```
+
+* Dictionaries:
+```yaml
+martin:
+    name: Martin D'vloper
+    job: Developer
+    skill: Elite
+```
+
+* Comments:
+```yaml
+# This is a comment
+````
+
+* Variable - Ansible uses `“{{ var }}”` for variables:
+```yaml
+foo: "{{ variable }}"
+```
 
 # The Ansible Project Structure
 
-# The Ansible Vault
+# Ansible Galaxy
 
 # Ansible Reference
 
