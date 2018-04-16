@@ -27,16 +27,20 @@ Install Ansible using the conda-forge conda channel
 # The First Playbook
 
 As an example the playbook will create an AWS EC2 instance, run a
-few tasks on it and then destroy the instance to clean up.
+few tasks on it and then destroy the instance to clean up. This is
+ somewhat elaborate for a first example but for the intended audience
+ has most of the features of Ansible that I wanted to showcase.
 
-First add an IAM keypair to your local environment:
+For this demo the following AWS entities were set up ahead of time:
 
+* AWS account
+* AWS keypair (named ansible_demo here)
+* VPC with subnet
+* Security group (default group used here)
+* IAM access key credentials with permissions to create and terminate
+ EC2
 
-
-For this an AWS IAM keypair will be required and also a VPC and
-corresponding subnet. The `ansible_demo.yml` file contains the following
-playbook:
-
+The `ansible_demo.yml` file contains the following play:
 
 ```yaml
 ---
@@ -123,7 +127,27 @@ playbook:
         instance_ids: '{{ ec2.instance_ids }}'
 ```
 
-To execute this
+To use this play yourself you will need to create a local file and place
+ a strong password within it. Then take your AWS access and secret keys
+ and generate the ansible vault encrypted values using the newly created
+ conda virtualenv and then following executing the following command:
+
+```
+source /path/to/miniconda/envs/ansible_demo
+ansible-vault encrypt_string --vault_password_file=vault_pass.txt '<AWS ACCESS KEY HERE>' --name 'aws_access_key'
+```
+
+and likewise:
+
+`ansible-vault encrypt_string --vault-password-file=vault_pass.txt '<AWS SECRET KEY HERE>' --name 'aws_secret_key'`
+
+where `vault_pass.txt` is the local file holding the strong password.
+Copy and paste the output into the playbook for the relevant lines.
+
+To execute the play then run the following command from the command line
+assuming you still have the conda virtualenv loaded:
+
+`ansible-playbook /path/to/ansible_demo.yml --vault-password-file /path/to/vault_pass.txt`
 
 # YAML Syntax
 
